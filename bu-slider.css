@@ -22,17 +22,17 @@
   display:block;
 }
 
-/* Slide e modo viewer */
+/* Regras principais do slider */
 .bu-slide img,
 .bu-main {
   width:100%;
   height:400px;
   object-fit:cover;
   border-radius:10px;
+  transition:opacity .3s ease, transform .3s ease;
 }
 
-
-/* GRID com tamanho menor */
+/* GRID separado com altura menor */
 .bu-grid img {
   width:100%;
   height:200px;
@@ -40,15 +40,13 @@
   border-radius:10px;
 }
 
-
-/* ✨ Tamanho responsivo */
+/* Mobile ajuste opcional */
 @media(max-width:600px){
-  .bu-slide img,
-  .bu-main,
   .bu-grid img {
-    height:240px;
+    height:140px;
   }
 }
+
 
 /* Legenda */
 .bu-slide span{
