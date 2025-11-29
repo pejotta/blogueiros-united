@@ -21,4 +21,21 @@
   width:80px;margin:5px;border-radius:6px;
   cursor:pointer;opacity:.6;
 }
-.bu-thumbs img:hover{opacity:1;}
+.bu-thumbs img:hover{opacity:1;
+}
+.bu-slide img,
+.bu-main,
+.bu-grid img {
+  width:100%;
+  height:400px;
+  object-fit:contain;
+  background:#000; /* pra não ficar aquele vazio feio */
+  border-radius:10px;
+}
+@media(max-width:600px){
+  .bu-slide img,
+  .bu-main,
+  .bu-grid img {
+    height:250px;
+  }
+}
