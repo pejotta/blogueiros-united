@@ -45,7 +45,6 @@
 }
 
 /* 🔥 Regra independente — força o grid ter tamanho menor */
-.bu-grid figure img,
 .bu-grid img {
   width: 100% !important;
   height: 200px !important;
