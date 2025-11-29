@@ -28,7 +28,7 @@
 .bu-grid img {
   width:100%;
   height:400px; /* Ajuste se quiser mais alto ou baixo */
-  object-fit:contain; /* Mantém layout estável */
+  object-fit:cover; /* Mantém layout estável */
   border-radius:10px;
   transition:opacity .3s ease, transform .3s ease;
 }
@@ -110,7 +110,7 @@
 .bu-thumbs img{
   width:85px;
   height:85px;
-  object-fit:cover;
+  object-fit:contain;
   margin:5px;
   border-radius:6px;
   cursor:pointer;
