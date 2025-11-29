@@ -1,4 +1,3 @@
-<script>
 // autoplay
 setInterval(()=>{
   document.querySelectorAll(".bu-slider[data-auto='true']").forEach(slider=>{
@@ -27,4 +26,3 @@ document.addEventListener("click",e=>{
   else index=(index-1+slides.length)%slides.length;
   slides[index].classList.add("active");
 });
-</script>
