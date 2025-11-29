@@ -1,41 +1,130 @@
-.bu-slider{position:relative;overflow:hidden;border-radius:10px;}
-.bu-slide{display:none;}
-.bu-slide.active{display:block;}
-.bu-slide img{width:100%;border-radius:10px;cursor:pointer;}
-.bu-prev,.bu-next{
-  position:absolute;top:50%;transform:translateY(-50%);
-  background:rgba(0,0,0,.5);color:#fff;border:none;padding:10px;
-  cursor:pointer;font-size:22px;border-radius:8px;
-}
-.bu-prev{left:10px;} .bu-next{right:10px;}
+/* ============================
+   B.U. SLIDER — CSS OFICIAL
+   by Blogueiros United 🚀
+   ============================ */
 
-.bu-grid{
-  display:grid;gap:10px;
-  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+.bu-slider{
+  position:relative;
+  overflow:hidden;
+  border-radius:10px;
+  width:100%;
+  margin:auto;
 }
-.bu-grid img{width:100%;border-radius:10px;}
 
-.bu-viewer{text-align:center;}
-.bu-main{width:100%;border-radius:12px;margin-bottom:10px;}
-.bu-thumbs img{
-  width:80px;margin:5px;border-radius:6px;
-  cursor:pointer;opacity:.6;
+/* Slide padrão oculto */
+.bu-slide{
+  display:none;
+  text-align:center;
 }
-.bu-thumbs img:hover{opacity:1;
+
+/* Slide ativo visível */
+.bu-slide.active{
+  display:block;
 }
+
+/* 🔥 Modo imagem padrão (equalizador visual) */
 .bu-slide img,
 .bu-main,
 .bu-grid img {
   width:100%;
-  height:400px;
-  object-fit:contain;
-  background:#000; /* pra não ficar aquele vazio feio */
+  height:400px; /* Ajuste se quiser mais alto ou baixo */
+  object-fit:cover; /* Mantém layout estável */
   border-radius:10px;
+  transition:opacity .3s ease, transform .3s ease;
 }
+
+/* ✨ Tamanho responsivo */
 @media(max-width:600px){
   .bu-slide img,
   .bu-main,
   .bu-grid img {
-    height:250px;
+    height:240px;
   }
+}
+
+/* Legenda */
+.bu-slide span{
+  display:block;
+  font-size:14px;
+  margin-top:6px;
+  opacity:.8;
+}
+
+/* Botões de navegação */
+.bu-prev,
+.bu-next {
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  background:rgba(0,0,0,.5);
+  color:#fff;
+  border:none;
+  padding:10px 14px;
+  cursor:pointer;
+  font-size:22px;
+  border-radius:8px;
+  z-index:10;
+  transition:background .2s;
+}
+
+.bu-prev:hover, .bu-next:hover {
+  background:rgba(0,0,0,.8);
+}
+
+.bu-prev{ left:10px; }
+.bu-next{ right:10px; }
+
+/* ============================
+      MODE: GRADE RESPONSIVA
+   ============================ */
+
+.bu-grid{
+  display:grid;
+  gap:10px;
+  grid-template-columns:repeat(auto-fit, minmax(150px,1fr));
+}
+
+.bu-grid figure{
+  margin:0;
+  text-align:center;
+}
+
+.bu-grid figcaption{
+  font-size:12px;
+  margin-top:5px;
+  opacity:.7;
+}
+
+/* ============================
+   MODE: VIEWER + MINIATURAS
+   ============================ */
+
+.bu-viewer{
+  text-align:center;
+}
+
+.bu-main{
+  margin-bottom:10px;
+}
+
+.bu-thumbs img{
+  width:85px;
+  height:85px;
+  object-fit:cover;
+  margin:5px;
+  border-radius:6px;
+  cursor:pointer;
+  opacity:.5;
+  transition:opacity .2s, transform .2s;
+}
+
+.bu-thumbs img:hover{
+  opacity:1;
+  transform:scale(1.05);
+}
+
+/* Marcação da miniatura ativa (opcional) */
+.bu-thumb-active{
+  outline:3px solid #6a4cff;
+  opacity:1 !important;
 }
