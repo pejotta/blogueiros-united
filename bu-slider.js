@@ -1,28 +1,105 @@
-// autoplay
-setInterval(()=>{
-  document.querySelectorAll(".bu-slider[data-auto='true']").forEach(slider=>{
-    let slides=slider.querySelectorAll(".bu-slide");
-    let active=[...slides].findIndex(s=>s.classList.contains("active"));
-    slides[active].classList.remove("active");
-    slides[(active+1)%slides.length].classList.add("active");
+// B.U. SLIDER - Script principal
+// Cole esse código puro dentro do arquivo bu-slider.js no GitHub
+
+(function(){
+
+  // ============================
+  //  FUNÇÃO: Próximo slide
+  // ============================
+  function buNextSlide(slider){
+    const slides = slider.querySelectorAll('.bu-slide');
+    if (!slides.length) return;
+
+    let activeIndex = 0;
+    slides.forEach((s, i) => {
+      if (s.classList.contains('active')) activeIndex = i;
+    });
+
+    slides[activeIndex].classList.remove('active');
+    const nextIndex = (activeIndex + 1) % slides.length;
+    slides[nextIndex].classList.add('active');
+  }
+
+  // ============================
+  //  AUTOPLAY (data-auto="true")
+  // ============================
+  function buSetupAutoplay(){
+    setInterval(function(){
+      document.querySelectorAll('.bu-slider[data-auto="true"]').forEach(slider => {
+        buNextSlide(slider);
+      });
+    }, 4000);
+  }
+
+  // ============================
+  //  NAVEGAÇÃO MANUAL (prev/next)
+  // ============================
+  document.addEventListener('click', function(e){
+    const prevBtn = e.target.closest('.bu-prev');
+    const nextBtn = e.target.closest('.bu-next');
+
+    if (!prevBtn && !nextBtn) return;
+
+    const button = prevBtn || nextBtn;
+    const slider = button.closest('.bu-slider');
+    if (!slider) return;
+
+    const slides = slider.querySelectorAll('.bu-slide');
+    if (!slides.length) return;
+
+    let activeIndex = 0;
+    slides.forEach((s, i) => {
+      if (s.classList.contains('active')) activeIndex = i;
+    });
+
+    slides[activeIndex].classList.remove('active');
+
+    if (nextBtn) {
+      activeIndex = (activeIndex + 1) % slides.length;
+    } else {
+      activeIndex = (activeIndex - 1 + slides.length) % slides.length;
+    }
+
+    slides[activeIndex].classList.add('active');
   });
-},4000);
 
-// thumb gallery
-document.addEventListener("click",e=>{
-  if(!e.target.classList.contains("bu-thumb"))return;
-  let viewer=e.target.closest(".bu-viewer");
-  viewer.querySelector(".bu-main").src=e.target.src;
-});
+  // ============================
+  //  MINIATURAS (bu-thumb)
+  // ============================
+  document.addEventListener('click', function(e){
+    const thumb = e.target.closest('.bu-thumb');
+    if (!thumb) return;
 
-// manual navigation
-document.addEventListener("click",e=>{
-  if(!e.target.classList.contains("bu-prev") && !e.target.classList.contains("bu-next"))return;
-  let slider=e.target.closest(".bu-slider");
-  let slides=slider.querySelectorAll(".bu-slide");
-  let index=[...slides].findIndex(s=>s.classList.contains("active"));
-  slides[index].classList.remove("active");
-  if(e.target.classList.contains("bu-next")) index=(index+1)%slides.length;
-  else index=(index-1+slides.length)%slides.length;
-  slides[index].classList.add("active");
-});
+    const viewer = thumb.closest('.bu-viewer');
+    if (!viewer) return;
+
+    const mainImg  = viewer.querySelector('.bu-main');
+    const mainLink = viewer.querySelector('.bu-lightbox');
+
+    if (mainImg) {
+      mainImg.src = thumb.src;
+    }
+    if (mainLink) {
+      mainLink.href = thumb.src;
+    }
+
+    // marca thumb ativa
+    viewer.querySelectorAll('.bu-thumb').forEach(t => t.classList.remove('bu-thumb-active'));
+    thumb.classList.add('bu-thumb-active');
+  });
+
+
+  // ============================
+  //  INICIAR AUTOPLAY
+  // ============================
+  function buInit(){
+    buSetupAutoplay();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', buInit);
+  } else {
+    buInit();
+  }
+
+})();
