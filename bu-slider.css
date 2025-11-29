@@ -40,15 +40,6 @@
    transition: opacity .3s ease, transform .3s ease;
 }
 
-/* &#10024; Tamanho responsivo */
-@media(max-width:600px){
-  .bu-slide img,
-  .bu-main,
-  .bu-grid img {
-    height:240px;
-  }
-}
-
 /* Legenda */
 .bu-slide span{
   display:block;
