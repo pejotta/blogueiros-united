@@ -1,5 +1,5 @@
 /* ============================
-   B.U. SLIDER — CSS OFICIAL
+   B.U. SLIDER &#8212; CSS OFICIAL
    by Blogueiros United 🚀
    ============================ */
 
@@ -28,12 +28,12 @@
 .bu-grid img {
   width:100%;
   height:400px; /* Ajuste se quiser mais alto ou baixo */
-  object-fit:cover; /* Mantém layout estável */
+  object-fit:contain; /* Mantém layout estável */
   border-radius:10px;
   transition:opacity .3s ease, transform .3s ease;
 }
 
-/* ✨ Tamanho responsivo */
+/* &#10024; Tamanho responsivo */
 @media(max-width:600px){
   .bu-slide img,
   .bu-main,
