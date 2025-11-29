@@ -22,16 +22,24 @@
   display:block;
 }
 
-/* 🔥 Modo imagem padrão (equalizador visual) */
+/* Slide e modo viewer */
 .bu-slide img,
-.bu-main,
+.bu-main {
+  width:100%;
+  height:400px;
+  object-fit:cover;
+  border-radius:10px;
+}
+
+
+/* GRID com tamanho menor */
 .bu-grid img {
   width:100%;
-  height:400px; /* Ajuste se quiser mais alto ou baixo */
-  object-fit:cover; /* Mantém layout estável */
+  height:200px;
+  object-fit:cover;
   border-radius:10px;
-  transition:opacity .3s ease, transform .3s ease;
 }
+
 
 /* ✨ Tamanho responsivo */
 @media(max-width:600px){
