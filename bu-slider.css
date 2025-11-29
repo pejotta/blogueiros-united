@@ -53,6 +53,16 @@
   display: block;
 }
 
+/* Efeito hover sutil nas imagens do grid */
+.bu-grid img {
+  transition: transform .25s ease, opacity .25s ease;
+}
+
+.bu-grid img:hover {
+  transform: translateY(-2px);
+  opacity: .95;
+}
+
 /* Legendas no grid */
 .bu-grid figcaption {
   font-size: 12px;
