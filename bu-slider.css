@@ -1,5 +1,5 @@
 /* ============================
-   B.U. SLIDER &#8212; CSS OFICIAL
+   B.U. SLIDER — CSS OFICIAL
    by Blogueiros United 🚀
    ============================ */
 
@@ -24,7 +24,8 @@
 
 /* 🔥 Modo imagem padrão (equalizador visual) */
 .bu-slide img,
-.bu-main {
+.bu-main,
+.bu-grid img {
   width:100%;
   height:400px; /* Ajuste se quiser mais alto ou baixo */
   object-fit:cover; /* Mantém layout estável */
@@ -32,12 +33,13 @@
   transition:opacity .3s ease, transform .3s ease;
 }
 
-.bu-grid img {
-   width: 100%;
-   height:200px !important;
-   object-fit: cover !important;
-   border-radius: 10px;
-   transition: opacity .3s ease, transform .3s ease;
+/* ✨ Tamanho responsivo */
+@media(max-width:600px){
+  .bu-slide img,
+  .bu-main,
+  .bu-grid img {
+    height:240px;
+  }
 }
 
 /* Legenda */
@@ -108,7 +110,7 @@
 .bu-thumbs img{
   width:85px;
   height:85px;
-  object-fit:contain;
+  object-fit:cover;
   margin:5px;
   border-radius:6px;
   cursor:pointer;
