@@ -1,136 +1,141 @@
-/* ============================
-   B.U. SLIDER — CSS OFICIAL
-   by Blogueiros United 🚀
-   ============================ */
+/* =======================================================
+   B.U. SLIDER — CSS OFICIAL v2.2
+   (By Blogueiros United)
+   ======================================================= */
 
-.bu-slider{
-  position:relative;
-  overflow:hidden;
-  border-radius:10px;
-  width:100%;
-  margin:auto;
+/* ---------- STYLE BASE ---------- */
+.bu-slider,
+.bu-grid,
+.bu-viewer {
+  width: 100%;
+  margin: auto;
+  border-radius: 10px;
 }
 
-/* Slide padrão oculto */
-.bu-slide{
-  display:none;
-  text-align:center;
+/* ---------- CAROUSEL / SLIDE ---------- */
+.bu-slider {
+  position: relative;
+  overflow: hidden;
 }
 
-/* Slide ativo visível */
-.bu-slide.active{
-  display:block;
+.bu-slide {
+  display: none;
+  text-align: center;
 }
 
-/* Regras principais do slider */
+.bu-slide.active {
+  display: block;
+}
+
+/* Imagem do slider e imagem principal */
 .bu-slide img,
 .bu-main {
-  width:100%;
-  height:400px;
-  object-fit:cover;
-  border-radius:10px;
-  transition:opacity .3s ease, transform .3s ease;
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: opacity .3s ease, transform .3s ease;
 }
 
-/* GRID separado com altura menor */
+/* ---------- GRID ---------- */
+.bu-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+/* 🔥 Regra independente — força o grid ter tamanho menor */
+.bu-grid figure img,
 .bu-grid img {
-  width:100%;
-  height:200px;
-  object-fit:cover;
-  border-radius:10px;
+  width: 100% !important;
+  height: 200px !important;
+  object-fit: cover !important;
+  border-radius: 10px;
+  display: block;
 }
 
-/* Mobile ajuste opcional */
-@media(max-width:600px){
-  .bu-grid img {
-    height:140px;
-  }
+/* Legendas no grid */
+.bu-grid figcaption {
+  font-size: 12px;
+  margin-top: 5px;
+  opacity: .7;
+  text-align: center;
 }
 
+/* ---------- THUMB VIEW MODE ---------- */
 
-/* Legenda */
-.bu-slide span{
-  display:block;
-  font-size:14px;
-  margin-top:6px;
-  opacity:.8;
+.bu-viewer {
+  text-align: center;
 }
 
-/* Botões de navegação */
+.bu-main {
+  margin-bottom: 10px;
+}
+
+/* Miniaturas */
+.bu-thumbs img {
+  width: 85px;
+  height: 85px;
+  object-fit: cover;
+  margin: 5px;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: .5;
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+.bu-thumbs img:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* Miniatura ativa */
+.bu-thumb-active {
+  outline: 3px solid #6a4cff;
+  opacity: 1 !important;
+}
+
+/* ---------- NAVEGAÇÃO ----------- */
+
 .bu-prev,
 .bu-next {
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  background:rgba(0,0,0,.5);
-  color:#fff;
-  border:none;
-  padding:10px 14px;
-  cursor:pointer;
-  font-size:22px;
-  border-radius:8px;
-  z-index:10;
-  transition:background .2s;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,.5);
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 22px;
+  border-radius: 8px;
+  z-index: 10;
+  transition: background .2s ease;
 }
 
-.bu-prev:hover, .bu-next:hover {
-  background:rgba(0,0,0,.8);
+.bu-prev:hover,
+.bu-next:hover {
+  background: rgba(0,0,0,.8);
 }
 
-.bu-prev{ left:10px; }
-.bu-next{ right:10px; }
+.bu-prev { left: 10px; }
+.bu-next { right: 10px; }
 
-/* ============================
-      MODE: GRADE RESPONSIVA
-   ============================ */
+/* ---------- RESPONSIVIDADE ---------- */
 
-.bu-grid{
-  display:grid;
-  gap:10px;
-  grid-template-columns:repeat(auto-fit, minmax(150px,1fr));
-}
+@media(max-width:600px){
 
-.bu-grid figure{
-  margin:0;
-  text-align:center;
-}
+  .bu-slide img,
+  .bu-main {
+    height: 260px;
+  }
 
-.bu-grid figcaption{
-  font-size:12px;
-  margin-top:5px;
-  opacity:.7;
-}
+  .bu-grid img {
+    height: 140px !important;
+  }
 
-/* ============================
-   MODE: VIEWER + MINIATURAS
-   ============================ */
-
-.bu-viewer{
-  text-align:center;
-}
-
-.bu-main{
-  margin-bottom:10px;
-}
-
-.bu-thumbs img{
-  width:85px;
-  height:85px;
-  object-fit:cover;
-  margin:5px;
-  border-radius:6px;
-  cursor:pointer;
-  opacity:.5;
-  transition:opacity .2s, transform .2s;
-}
-
-.bu-thumbs img:hover{
-  opacity:1;
-  transform:scale(1.05);
-}
-
-/* Marcação da miniatura ativa (opcional) */
-.bu-thumb-active{
-  outline:3px solid #6a4cff;
-  opacity:1 !important;
+  .bu-thumbs img {
+    width: 65px;
+    height: 65px;
+  }
 }
