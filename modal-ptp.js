@@ -112,6 +112,11 @@ function abrirModal() {
 
     if (!modal || !adFrame) return;
 
+    // Garante que o tempo configurado seja um número válido maior ou igual a 1
+    const tempoInicial = Number.isFinite(Number(TEMPO_TIMER_SEGUNDOS)) && Number(TEMPO_TIMER_SEGUNDOS) >= 1
+        ? Math.floor(Number(TEMPO_TIMER_SEGUNDOS))
+        : 15;
+
     // 1. LÓGICA DE ALTERNÂNCIA (Rodízio de Links)
     const linkParaUsar = LINKS_PTP[indiceAtualDoLink];
     indiceAtualDoLink = (indiceAtualDoLink + 1) % LINKS_PTP.length;
@@ -124,7 +129,7 @@ function abrirModal() {
 
     // 3. INICIA O CONTADOR VISUAL
     const displayElement = document.getElementById("countdownDisplay");
-    let timer = TEMPO_TIMER_SEGUNDOS;
+    let timer = tempoInicial;
 
     if (displayElement) {
         displayElement.textContent = timer + "s";
@@ -189,4 +194,30 @@ function copiarComFallback(textarea, mostrarFeedback) {
     } catch (erro) {
         mostrarFeedback("Selecione e use Ctrl+C");
     }
+}
+
+window.copiarCodigoFerramenta = copiarCodigoFerramenta;
+
+function bindBotaoCopiarModal() {
+    const btnCopiar = document.querySelector("#codigoDaFerramenta .btn-copiar-codigo, #codigoDaFerramenta button[onclick*='copiarCodigoFerramenta']");
+    if (btnCopiar) {
+        btnCopiar.onclick = function(event) {
+            event.preventDefault();
+            copiarCodigoFerramenta(this);
+        };
+    }
+}
+
+document.addEventListener("click", function(event) {
+    const target = event.target.closest("#codigoDaFerramenta .btn-copiar-codigo, #codigoDaFerramenta button[onclick*='copiarCodigoFerramenta']");
+    if (target) {
+        event.preventDefault();
+        copiarCodigoFerramenta(target);
+    }
+});
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindBotaoCopiarModal);
+} else {
+    bindBotaoCopiarModal();
 }
