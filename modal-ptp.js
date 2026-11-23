@@ -1,5 +1,7 @@
 // --- VARIÁVEIS GLOBAIS DE CONTROLE PTP ---
 
+const TEMPO_TIMER_SEGUNDOS = 600; // <-- MUDE AQUI O TEMPO DO CONTADOR (em segundos)
+
 const LINKS_PTP = [
     "https://www.rotate4all.com/ptp/promote-295036",
     "https://adnade.net/ptp/?user=pejotta&subid=blogueiros",
@@ -122,7 +124,7 @@ function abrirModal() {
 
     // 3. INICIA O CONTADOR VISUAL
     const displayElement = document.getElementById("countdownDisplay");
-    let timer = 600;
+    let timer = TEMPO_TIMER_SEGUNDOS;
 
     if (displayElement) {
         displayElement.textContent = timer + "s";
