@@ -18,7 +18,7 @@
 
     // Configurações de velocidade e direção (1 = esquerda para a direita | -1 = direita para a esquerda)
     const VELOCIDADE_PX_POR_FRAME = 0.65;
-    const DIRECAO = 1;
+    const DIRECAO = -1;
 
     let larguraMetade = 0;
     let posicaoAtual = 0;
