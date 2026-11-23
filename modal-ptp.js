@@ -15,6 +15,47 @@ let indiceAtualDoLink = 0;
 let countdownInterval; // Variável para gerenciar o contador regressivo
 
 // ------------------------------------------------------------------
+// --- FUNÇÃO AUXILIAR: COPIAR CÓDIGO DA CAIXA DE TEXTO (NO TOPO) ---
+// ------------------------------------------------------------------
+
+function copiarCodigoFerramenta(btnElement) {
+    const textarea = document.querySelector("#codigoDaFerramenta textarea");
+    if (!textarea) return;
+
+    const textoParaCopiar = textarea.value;
+    const textoOriginal = btnElement ? btnElement.textContent : "Copiar Código";
+
+    const mostrarFeedback = (mensagem) => {
+        if (!btnElement) return;
+        btnElement.textContent = mensagem;
+        setTimeout(() => {
+            btnElement.textContent = textoOriginal;
+        }, 1800);
+    };
+
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(textoParaCopiar)
+            .then(() => mostrarFeedback("Copiado!"))
+            .catch(() => copiarComFallback(textarea, mostrarFeedback));
+    } else {
+        copiarComFallback(textarea, mostrarFeedback);
+    }
+}
+
+function copiarComFallback(textarea, mostrarFeedback) {
+    try {
+        textarea.focus();
+        textarea.select();
+        const sucesso = document.execCommand("copy");
+        mostrarFeedback(sucesso ? "Copiado!" : "Falhou ao copiar");
+    } catch (erro) {
+        mostrarFeedback("Selecione e use Ctrl+C");
+    }
+}
+
+window.copiarCodigoFerramenta = copiarCodigoFerramenta;
+
+// ------------------------------------------------------------------
 // --- FUNÇÃO AUXILIAR DE DIMENSÃO (MODAL 90% TELA | PTP 80% MODAL) ---
 // ------------------------------------------------------------------
 
@@ -157,45 +198,9 @@ function abrirModal() {
     }, 1000);
 }
 
-// ------------------------------------------------------------------
-// --- FUNÇÃO AUXILIAR: COPIAR CÓDIGO DA CAIXA DE TEXTO ---
-// ------------------------------------------------------------------
-
-function copiarCodigoFerramenta(btnElement) {
-    const textarea = document.querySelector("#codigoDaFerramenta textarea");
-    if (!textarea) return;
-
-    const textoParaCopiar = textarea.value;
-    const textoOriginal = btnElement ? btnElement.textContent : "Copiar Código";
-
-    const mostrarFeedback = (mensagem) => {
-        if (!btnElement) return;
-        btnElement.textContent = mensagem;
-        setTimeout(() => {
-            btnElement.textContent = textoOriginal;
-        }, 1800);
-    };
-
-    if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(textoParaCopiar)
-            .then(() => mostrarFeedback("Copiado!"))
-            .catch(() => copiarComFallback(textarea, mostrarFeedback));
-    } else {
-        copiarComFallback(textarea, mostrarFeedback);
-    }
-}
-
-function copiarComFallback(textarea, mostrarFeedback) {
-    try {
-        textarea.focus();
-        textarea.select();
-        const sucesso = document.execCommand("copy");
-        mostrarFeedback(sucesso ? "Copiado!" : "Falhou ao copiar");
-    } catch (erro) {
-        mostrarFeedback("Selecione e use Ctrl+C");
-    }
-}
-
+window.abrirModal = abrirModal;
+window.fecharModal = fecharModal;
+window.liberarCodigo = liberarCodigo;
 window.copiarCodigoFerramenta = copiarCodigoFerramenta;
 
 function bindBotaoCopiarModal() {
