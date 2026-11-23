@@ -40,13 +40,16 @@ function aplicarEscalaResponsivaModal() {
         modalConteudo.style.maxHeight = "90vh";
         modalConteudo.style.overflowY = "auto";
         modalConteudo.style.boxSizing = "border-box";
+        modalConteudo.style.display = "flex";
+        modalConteudo.style.flexDirection = "column";
     }
 
     if (adFrame) {
         adFrame.style.width = "100%";
-        adFrame.style.height = Math.max(200, altura16x9 - 120) + "px";
+        adFrame.style.flex = "1 1 auto";
+        adFrame.style.minHeight = "220px";
+        adFrame.style.maxHeight = Math.max(220, altura16x9 - 70) + "px";
         adFrame.style.maxWidth = "100%";
-        adFrame.style.aspectRatio = "16 / 9";
     }
 }
 
@@ -94,10 +97,10 @@ function liberarCodigo() {
     if (adFrame) adFrame.style.display = "none";
     if (codigoBox) codigoBox.style.display = "block";
 
-    // 3. Oculta o display do timer após liberar
+    // 3. Atualiza ou oculta o display do timer após liberar
     const displayElement = document.getElementById("countdownDisplay");
     if (displayElement) {
-        displayElement.style.display = "none";
+        displayElement.textContent = "0s";
     }
 }
 
@@ -127,8 +130,8 @@ function abrirModal() {
     let timer = 15;
 
     if (displayElement) {
-        displayElement.textContent = timer;
-        displayElement.style.display = "block";
+        displayElement.textContent = timer + "s";
+        displayElement.style.display = "inline-flex";
     }
 
     adFrame.src = linkParaUsar;
@@ -142,15 +145,51 @@ function abrirModal() {
         timer--;
 
         if (displayElement) {
-            displayElement.textContent = timer;
+            displayElement.textContent = Math.max(0, timer) + "s";
         }
 
         if (timer <= 0) {
             clearInterval(countdownInterval);
-            if (displayElement) {
-                displayElement.style.display = "none";
-            }
             liberarCodigo();
         }
     }, 1000);
+}
+
+// ------------------------------------------------------------------
+// --- FUNÇÃO AUXILIAR: COPIAR CÓDIGO DA CAIXA DE TEXTO ---
+// ------------------------------------------------------------------
+
+function copiarCodigoFerramenta(btnElement) {
+    const textarea = document.querySelector("#codigoDaFerramenta textarea");
+    if (!textarea) return;
+
+    const textoParaCopiar = textarea.value;
+    const textoOriginal = btnElement ? btnElement.textContent : "Copiar Código";
+
+    const mostrarFeedback = (mensagem) => {
+        if (!btnElement) return;
+        btnElement.textContent = mensagem;
+        setTimeout(() => {
+            btnElement.textContent = textoOriginal;
+        }, 1800);
+    };
+
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(textoParaCopiar)
+            .then(() => mostrarFeedback("Copiado!"))
+            .catch(() => copiarComFallback(textarea, mostrarFeedback));
+    } else {
+        copiarComFallback(textarea, mostrarFeedback);
+    }
+}
+
+function copiarComFallback(textarea, mostrarFeedback) {
+    try {
+        textarea.focus();
+        textarea.select();
+        const sucesso = document.execCommand("copy");
+        mostrarFeedback(sucesso ? "Copiado!" : "Falhou ao copiar");
+    } catch (erro) {
+        mostrarFeedback("Selecione e use Ctrl+C");
+    }
 }
