@@ -122,7 +122,7 @@ function abrirModal() {
 
     // 3. INICIA O CONTADOR VISUAL
     const displayElement = document.getElementById("countdownDisplay");
-    let timer = 15;
+    let timer = 600;
 
     if (displayElement) {
         displayElement.textContent = timer + "s";
