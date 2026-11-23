@@ -1,19 +1,62 @@
 // --- VARIÁVEIS GLOBAIS DE CONTROLE PTP ---
 
 const LINKS_PTP = [
-    "https://www.rotate4all.com/ptp/promote-295036", 
-    "https://adnade.net/ptp/?user=pejotta&subid=blogueiros", 
-    "https://traffic2bitcoin.com/ptp2.php?ref=pejottatg", 
-    "https://www.topcliques.com.br/ppl.php?id=TOP498326571", 
-    "https://ptc.top.app.br/tb.php?id=XFF799FF9", 
-    "https://www.siteview.com.br/mega.php?id=SVDFA37027", 
+    "https://www.rotate4all.com/ptp/promote-295036",
+    "https://adnade.net/ptp/?user=pejotta&subid=blogueiros",
+    "https://traffic2bitcoin.com/ptp2.php?ref=pejottatg",
+    "https://www.topcliques.com.br/ppl.php?id=TOP498326571",
+    "https://ptc.top.app.br/tb.php?id=XFF799FF9",
+    "https://www.siteview.com.br/mega.php?id=SVDFA37027",
 ];
 
 let indiceAtualDoLink = 0;
 let countdownInterval; // Variável para gerenciar o contador regressivo
 
-const LARGURA_MINIMA = 1400; // Largura mínima para visualização do anúncio
-const ALTURA_MINIMA = 650;  // Altura mínima para visualização do anúncio
+// ------------------------------------------------------------------
+// --- FUNÇÃO AUXILIAR DE DIMENSÃO (80% DA TELA EM ESCALA 16:9) ---
+// ------------------------------------------------------------------
+
+function aplicarEscalaResponsivaModal() {
+    const modalConteudo = document.querySelector("#minhaModal .modal-conteudo");
+    const adFrame = document.getElementById("ad-frame");
+
+    // Calcula 80% da largura e altura visíveis da janela
+    const larguraAlvo = Math.floor(window.innerWidth * 0.8);
+    const alturaMaxima = Math.floor(window.innerHeight * 0.8);
+
+    // Calcula a altura correspondente em proporção 16:9
+    let altura16x9 = Math.round((larguraAlvo * 9) / 16);
+    let larguraFinal = larguraAlvo;
+
+    // Se a altura 16:9 ultrapassar 80% da altura da tela, ajusta pela altura mantendo 16:9
+    if (altura16x9 > alturaMaxima) {
+        altura16x9 = alturaMaxima;
+        larguraFinal = Math.round((altura16x9 * 16) / 9);
+    }
+
+    if (modalConteudo) {
+        modalConteudo.style.width = larguraFinal + "px";
+        modalConteudo.style.maxWidth = "95vw";
+        modalConteudo.style.maxHeight = "90vh";
+        modalConteudo.style.overflowY = "auto";
+        modalConteudo.style.boxSizing = "border-box";
+    }
+
+    if (adFrame) {
+        adFrame.style.width = "100%";
+        adFrame.style.height = Math.max(200, altura16x9 - 120) + "px";
+        adFrame.style.maxWidth = "100%";
+        adFrame.style.aspectRatio = "16 / 9";
+    }
+}
+
+// Reajusta automaticamente se o usuário redimensionar a janela enquanto a modal estiver aberta
+window.addEventListener("resize", () => {
+    const modal = document.getElementById("minhaModal");
+    if (modal && modal.style.display !== "none" && modal.style.display !== "") {
+        aplicarEscalaResponsivaModal();
+    }
+});
 
 // ------------------------------------------------------------------
 // --- FUNÇÕES DE CONTROLE DE ESTADO (Fechar e Liberar) ---
@@ -24,14 +67,18 @@ function fecharModal() {
     if (countdownInterval) {
         clearInterval(countdownInterval);
     }
-    
+
     // 2. Esconde a modal e limpa o iframe
-    document.getElementById("minhaModal").style.display = "none";
-    document.getElementById("ad-frame").src = ""; 
-    
-    // 3. Reseta o estado visual para a próxima abertura
-    document.getElementById("ad-frame").style.display = "block";
-    document.getElementById("codigoDaFerramenta").style.display = "none";
+    const modal = document.getElementById("minhaModal");
+    const adFrame = document.getElementById("ad-frame");
+    const codigoBox = document.getElementById("codigoDaFerramenta");
+
+    if (modal) modal.style.display = "none";
+    if (adFrame) {
+        adFrame.src = "";
+        adFrame.style.display = "block";
+    }
+    if (codigoBox) codigoBox.style.display = "none";
 }
 
 function liberarCodigo() {
@@ -39,15 +86,18 @@ function liberarCodigo() {
     if (countdownInterval) {
         clearInterval(countdownInterval);
     }
-    
+
     // 2. Oculta o iframe e mostra a área de liberação
-    document.getElementById("ad-frame").style.display = "none";
-    document.getElementById("codigoDaFerramenta").style.display = "block";
-    
-    // 3. Opcional: Você pode querer ocultar o display do timer após liberar
-    const displayElement = document.getElementById('countdownDisplay');
+    const adFrame = document.getElementById("ad-frame");
+    const codigoBox = document.getElementById("codigoDaFerramenta");
+
+    if (adFrame) adFrame.style.display = "none";
+    if (codigoBox) codigoBox.style.display = "block";
+
+    // 3. Oculta o display do timer após liberar
+    const displayElement = document.getElementById("countdownDisplay");
     if (displayElement) {
-        displayElement.style.display = 'none';
+        displayElement.style.display = "none";
     }
 }
 
@@ -56,59 +106,51 @@ function liberarCodigo() {
 // ------------------------------------------------------------------
 
 function abrirModal() {
-    // 1. VERIFICAÇÃO DO TAMANHO DA JANELA
-    const larguraJanela = window.innerWidth;
-    const alturaJanela = window.innerHeight;
-    
-    if (larguraJanela < LARGURA_MINIMA || alturaJanela < ALTURA_MINIMA) {
-        alert("Desculpe, a visualização do anúncio requer uma janela de navegador maior (mínimo de " + LARGURA_MINIMA + "x" + ALTURA_MINIMA + " pixels) para validar o crédito. Por favor, maximize sua janela ou use um desktop.");
-        return; 
-    }
+    const modal = document.getElementById("minhaModal");
+    const adFrame = document.getElementById("ad-frame");
+    const codigoBox = document.getElementById("codigoDaFerramenta");
 
-    // 2. LÓGICA DE ALTERNÂNCIA (Rodízio de Links)
+    if (!modal || !adFrame) return;
+
+    // 1. LÓGICA DE ALTERNÂNCIA (Rodízio de Links)
     const linkParaUsar = LINKS_PTP[indiceAtualDoLink];
-    // Usa o operador módulo (%) para garantir que o índice sempre volte ao 0
-    indiceAtualDoLink = (indiceAtualDoLink + 1) % LINKS_PTP.length; 
-    
-    // 3. PREPARAÇÃO DA MODAL
-    document.getElementById("ad-frame").style.display = "block";
-    document.getElementById("codigoDaFerramenta").style.display = "none";
-    document.getElementById("minhaModal").style.display = "flex"; 
-    
-    // 4. INICIA O CONTADOR VISUAL
-    const displayElement = document.getElementById('countdownDisplay');
-    let timer = 15;
-    
-    // Inicializa o display e carrega o PTP
-    if (displayElement) {
-        displayElement.textContent = timer; 
-        displayElement.style.display = 'block'; // Garante que o contador está visível
-    }
-    
-    document.getElementById("ad-frame").src = linkParaUsar; // Carrega o PTP
+    indiceAtualDoLink = (indiceAtualDoLink + 1) % LINKS_PTP.length;
 
-    // 5. INICIA A CONTAGEM REGRESSIVA (Intervalo)
-    
-    // Limpa qualquer intervalo anterior (segurança crítica!)
+    // 2. PREPARAÇÃO DA MODAL E ESCALA 80% (16:9)
+    adFrame.style.display = "block";
+    if (codigoBox) codigoBox.style.display = "none";
+    modal.style.display = "flex";
+    aplicarEscalaResponsivaModal();
+
+    // 3. INICIA O CONTADOR VISUAL
+    const displayElement = document.getElementById("countdownDisplay");
+    let timer = 15;
+
+    if (displayElement) {
+        displayElement.textContent = timer;
+        displayElement.style.display = "block";
+    }
+
+    adFrame.src = linkParaUsar;
+
+    // 4. INICIA A CONTAGEM REGRESSIVA (Intervalo)
     if (countdownInterval) {
         clearInterval(countdownInterval);
     }
 
     countdownInterval = setInterval(() => {
         timer--;
-        
-        // Atualiza o display visual
+
         if (displayElement) {
-            displayElement.textContent = timer; 
+            displayElement.textContent = timer;
         }
 
         if (timer <= 0) {
-            // Fim da contagem!
-            clearInterval(countdownInterval); 
+            clearInterval(countdownInterval);
             if (displayElement) {
-                displayElement.style.display = 'none'; 
+                displayElement.style.display = "none";
             }
-            liberarCodigo(); // Chama a função para liberar o conteúdo
+            liberarCodigo();
         }
-    }, 1000); // Roda a cada 1 segundo (1000ms)
+    }, 1000);
 }
