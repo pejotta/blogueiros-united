@@ -13,43 +13,41 @@ let indiceAtualDoLink = 0;
 let countdownInterval; // Variável para gerenciar o contador regressivo
 
 // ------------------------------------------------------------------
-// --- FUNÇÃO AUXILIAR DE DIMENSÃO (80% DA TELA EM ESCALA 16:9) ---
+// --- FUNÇÃO AUXILIAR DE DIMENSÃO (MODAL 90% TELA | PTP 80% MODAL) ---
 // ------------------------------------------------------------------
 
 function aplicarEscalaResponsivaModal() {
     const modalConteudo = document.querySelector("#minhaModal .modal-conteudo");
     const adFrame = document.getElementById("ad-frame");
+    const codigoTextarea = document.querySelector("#codigoDaFerramenta textarea");
 
-    // Calcula 80% da largura e altura visíveis da janela
-    const larguraAlvo = Math.floor(window.innerWidth * 0.8);
-    const alturaMaxima = Math.floor(window.innerHeight * 0.8);
-
-    // Calcula a altura correspondente em proporção 16:9
-    let altura16x9 = Math.round((larguraAlvo * 9) / 16);
-    let larguraFinal = larguraAlvo;
-
-    // Se a altura 16:9 ultrapassar 80% da altura da tela, ajusta pela altura mantendo 16:9
-    if (altura16x9 > alturaMaxima) {
-        altura16x9 = alturaMaxima;
-        larguraFinal = Math.round((altura16x9 * 16) / 9);
-    }
+    const larguraModal = Math.floor(window.innerWidth * 0.9);
+    const alturaModal = Math.floor(window.innerHeight * 0.9);
 
     if (modalConteudo) {
-        modalConteudo.style.width = larguraFinal + "px";
-        modalConteudo.style.maxWidth = "95vw";
+        modalConteudo.style.width = larguraModal + "px";
+        modalConteudo.style.height = alturaModal + "px";
+        modalConteudo.style.maxWidth = "90vw";
         modalConteudo.style.maxHeight = "90vh";
-        modalConteudo.style.overflowY = "auto";
         modalConteudo.style.boxSizing = "border-box";
         modalConteudo.style.display = "flex";
         modalConteudo.style.flexDirection = "column";
+        modalConteudo.style.justifyContent = "space-between";
     }
 
     if (adFrame) {
+        const alturaPtp = Math.max(200, Math.floor(alturaModal * 0.8));
         adFrame.style.width = "100%";
-        adFrame.style.flex = "1 1 auto";
-        adFrame.style.minHeight = "220px";
-        adFrame.style.maxHeight = Math.max(220, altura16x9 - 70) + "px";
-        adFrame.style.maxWidth = "100%";
+        adFrame.style.height = alturaPtp + "px";
+        adFrame.style.maxHeight = alturaPtp + "px";
+        adFrame.style.minHeight = "200px";
+        adFrame.style.flex = "0 0 " + alturaPtp + "px";
+    }
+
+    if (codigoTextarea) {
+        const alturaCaixaCodigo = Math.max(180, Math.floor(alturaModal * 0.72));
+        codigoTextarea.style.height = alturaCaixaCodigo + "px";
+        codigoTextarea.style.maxHeight = alturaCaixaCodigo + "px";
     }
 }
 
@@ -66,12 +64,10 @@ window.addEventListener("resize", () => {
 // ------------------------------------------------------------------
 
 function fecharModal() {
-    // 1. Para o contador, caso o usuário feche manualmente
     if (countdownInterval) {
         clearInterval(countdownInterval);
     }
 
-    // 2. Esconde a modal e limpa o iframe
     const modal = document.getElementById("minhaModal");
     const adFrame = document.getElementById("ad-frame");
     const codigoBox = document.getElementById("codigoDaFerramenta");
@@ -85,23 +81,22 @@ function fecharModal() {
 }
 
 function liberarCodigo() {
-    // 1. Limpa o contador
     if (countdownInterval) {
         clearInterval(countdownInterval);
     }
 
-    // 2. Oculta o iframe e mostra a área de liberação
     const adFrame = document.getElementById("ad-frame");
     const codigoBox = document.getElementById("codigoDaFerramenta");
 
     if (adFrame) adFrame.style.display = "none";
-    if (codigoBox) codigoBox.style.display = "block";
+    if (codigoBox) codigoBox.style.display = "flex";
 
-    // 3. Atualiza ou oculta o display do timer após liberar
     const displayElement = document.getElementById("countdownDisplay");
     if (displayElement) {
         displayElement.textContent = "0s";
     }
+
+    aplicarEscalaResponsivaModal();
 }
 
 // ------------------------------------------------------------------
@@ -119,7 +114,7 @@ function abrirModal() {
     const linkParaUsar = LINKS_PTP[indiceAtualDoLink];
     indiceAtualDoLink = (indiceAtualDoLink + 1) % LINKS_PTP.length;
 
-    // 2. PREPARAÇÃO DA MODAL E ESCALA 80% (16:9)
+    // 2. PREPARAÇÃO DA MODAL (90% TELA) E PTP (80% MODAL)
     adFrame.style.display = "block";
     if (codigoBox) codigoBox.style.display = "none";
     modal.style.display = "flex";
