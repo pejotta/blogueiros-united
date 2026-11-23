@@ -3,12 +3,12 @@
 const TEMPO_TIMER_SEGUNDOS = 15; // <-- MUDE AQUI O TEMPO DO CONTADOR (em segundos)
 
 const LINKS_PTP = [
-    "https://www.rotate4all.com/ptp/promote-295036",
     "https://adnade.net/ptp/?user=pejotta&subid=blogueiros",
     "https://traffic2bitcoin.com/ptp2.php?ref=pejottatg",
     "https://www.topcliques.com.br/ppl.php?id=TOP498326571",
     "https://ptc.top.app.br/tb.php?id=XFF799FF9",
     "https://www.siteview.com.br/mega.php?id=SVDFA37027",
+    "https://www.rotate4all.com/ptp/promote-295036",
 ];
 
 let indiceAtualDoLink = 0;
