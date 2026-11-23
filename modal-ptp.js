@@ -1,6 +1,6 @@
 // --- VARIÁVEIS GLOBAIS DE CONTROLE PTP ---
 
-const TEMPO_TIMER_SEGUNDOS = 600; // <-- MUDE AQUI O TEMPO DO CONTADOR (em segundos)
+const TEMPO_TIMER_SEGUNDOS = 15; // <-- MUDE AQUI O TEMPO DO CONTADOR (em segundos)
 
 const LINKS_PTP = [
     "https://www.rotate4all.com/ptp/promote-295036",
