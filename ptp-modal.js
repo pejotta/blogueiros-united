@@ -1,6 +1,6 @@
 // --- VARIÁVEIS GLOBAIS DE CONTROLE PTP ---
 
-const TEMPO_TIMER_SEGUNDOS = 15; // <-- MUDE AQUI O TEMPO DO CONTADOR (em segundos)
+const TEMPO_TIMER_SEGUNDOS = 30; // <-- MUDE AQUI O TEMPO DO CONTADOR (em segundos)
 
 const LINKS_PTP = [
     "https://adnade.net/ptp/?user=pejotta&subid=blogueiros",
